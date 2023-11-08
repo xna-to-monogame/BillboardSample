@@ -1,3 +1,5 @@
+> ⚠ This sample is currently not working in MonoGame 3.8.1  See [Issue #1](https://github.com/xna-to-monogame/BillboardSample/issues/1) for more information on why and if you would like solve it.
+
 # Billboard Sample
 
 This sample shows how to efficiently render large numbers of billboard sprites by using a vertex shader to perform the billboard computations entirely on the GPU.
