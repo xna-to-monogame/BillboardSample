@@ -24,15 +24,15 @@ namespace Billboard
     {
         #region Fields
 
-        GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager _graphics;
 
-        KeyboardState currentKeyboardState = new KeyboardState();
-        GamePadState currentGamePadState = new GamePadState();
+        private KeyboardState _currentKeyboardState = new KeyboardState();
+        private GamePadState _currentGamePadState = new GamePadState();
         
-        Vector3 cameraPosition = new Vector3(0, 50, 50);
-        Vector3 cameraFront = new Vector3(0, 0, -1);
+        private Vector3 _cameraPosition = new Vector3(0, 50, 50);
+        private Vector3 _cameraFront = new Vector3(0, 0, -1);
 
-        Model landscape;
+        private Model _landscape;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace Billboard
 
         public BillboardGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -51,7 +51,7 @@ namespace Billboard
         /// </summary>
         protected override void LoadContent()
         {
-            landscape = Content.Load<Model>("landscape");
+            _landscape = Content.Load<Model>("landscape");
         }
 
 
@@ -78,13 +78,13 @@ namespace Billboard
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice device = graphics.GraphicsDevice;
+            GraphicsDevice device = _graphics.GraphicsDevice;
 
             device.Clear(Color.CornflowerBlue);
 
             // Compute camera matrices.
-            Matrix view = Matrix.CreateLookAt(cameraPosition,
-                                              cameraPosition + cameraFront,
+            Matrix view = Matrix.CreateLookAt(_cameraPosition,
+                                              _cameraPosition + _cameraFront,
                                               Vector3.Up);
 
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
@@ -98,7 +98,7 @@ namespace Billboard
             float time = (float)gameTime.TotalGameTime.TotalSeconds * 0.333f;
 
             // First we draw the ground geometry using BasicEffect.
-            foreach (ModelMesh mesh in landscape.Meshes)
+            foreach (ModelMesh mesh in _landscape.Meshes)
             {
                 if (mesh.Name != "Billboards")
                 {
@@ -148,7 +148,7 @@ namespace Billboard
             // often looks ok, and is much faster than trying to sort everything 100%
             // correctly. It is particularly effective for organic textures like grass and
             // trees.
-            foreach (ModelMesh mesh in landscape.Meshes)
+            foreach (ModelMesh mesh in _landscape.Meshes)
             {
                 if (mesh.Name == "Billboards")
                 {
@@ -196,12 +196,12 @@ namespace Billboard
         /// </summary>
         private void HandleInput()
         {
-            currentKeyboardState = Keyboard.GetState();
-            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            _currentKeyboardState = Keyboard.GetState();
+            _currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
             // Check for exit.
-            if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
-                currentGamePadState.Buttons.Back == ButtonState.Pressed)
+            if (_currentKeyboardState.IsKeyDown(Keys.Escape) ||
+                _currentGamePadState.Buttons.Back == ButtonState.Pressed)
             {
                 Exit();
             }
@@ -216,60 +216,60 @@ namespace Billboard
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // Check for input to rotate the camera.
-            float pitch = -currentGamePadState.ThumbSticks.Right.Y * time * 0.001f;
-            float turn = -currentGamePadState.ThumbSticks.Right.X * time * 0.001f;
+            float pitch = -_currentGamePadState.ThumbSticks.Right.Y * time * 0.001f;
+            float turn = -_currentGamePadState.ThumbSticks.Right.X * time * 0.001f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Up))
+            if (_currentKeyboardState.IsKeyDown(Keys.Up))
                 pitch += time * 0.001f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Down))
+            if (_currentKeyboardState.IsKeyDown(Keys.Down))
                 pitch -= time * 0.001f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Left))
+            if (_currentKeyboardState.IsKeyDown(Keys.Left))
                 turn += time * 0.001f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Right))
+            if (_currentKeyboardState.IsKeyDown(Keys.Right))
                 turn -= time * 0.001f;
 
-            Vector3 cameraRight = Vector3.Cross(Vector3.Up, cameraFront);
+            Vector3 cameraRight = Vector3.Cross(Vector3.Up, _cameraFront);
             Vector3 flatFront = Vector3.Cross(cameraRight, Vector3.Up);
 
             Matrix pitchMatrix = Matrix.CreateFromAxisAngle(cameraRight, pitch);
             Matrix turnMatrix = Matrix.CreateFromAxisAngle(Vector3.Up, turn);
 
-            Vector3 tiltedFront = Vector3.TransformNormal(cameraFront, pitchMatrix * 
+            Vector3 tiltedFront = Vector3.TransformNormal(_cameraFront, pitchMatrix * 
                                                           turnMatrix);
 
             // Check angle so we cant flip over
             if (Vector3.Dot(tiltedFront, flatFront) > 0.001f)
             {
-                cameraFront = Vector3.Normalize(tiltedFront);
+                _cameraFront = Vector3.Normalize(tiltedFront);
             }
 
             // Check for input to move the camera around.
-            if (currentKeyboardState.IsKeyDown(Keys.W))
-                cameraPosition += cameraFront * time * 0.1f;
+            if (_currentKeyboardState.IsKeyDown(Keys.W))
+                _cameraPosition += _cameraFront * time * 0.1f;
             
-            if (currentKeyboardState.IsKeyDown(Keys.S))
-                cameraPosition -= cameraFront * time * 0.1f;
+            if (_currentKeyboardState.IsKeyDown(Keys.S))
+                _cameraPosition -= _cameraFront * time * 0.1f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.A))
-                cameraPosition += cameraRight * time * 0.1f;
+            if (_currentKeyboardState.IsKeyDown(Keys.A))
+                _cameraPosition += cameraRight * time * 0.1f;
 
-            if (currentKeyboardState.IsKeyDown(Keys.D))
-                cameraPosition -= cameraRight * time * 0.1f;
+            if (_currentKeyboardState.IsKeyDown(Keys.D))
+                _cameraPosition -= cameraRight * time * 0.1f;
 
-            cameraPosition += cameraFront *
-                              currentGamePadState.ThumbSticks.Left.Y * time * 0.1f;
+            _cameraPosition += _cameraFront *
+                              _currentGamePadState.ThumbSticks.Left.Y * time * 0.1f;
 
-            cameraPosition -= cameraRight *
-                              currentGamePadState.ThumbSticks.Left.X * time * 0.1f;
+            _cameraPosition -= cameraRight *
+                              _currentGamePadState.ThumbSticks.Left.X * time * 0.1f;
 
-            if (currentGamePadState.Buttons.RightStick == ButtonState.Pressed ||
-                currentKeyboardState.IsKeyDown(Keys.R))
+            if (_currentGamePadState.Buttons.RightStick == ButtonState.Pressed ||
+                _currentKeyboardState.IsKeyDown(Keys.R))
             {
-                cameraPosition = new Vector3(0, 50, 50);
-                cameraFront = new Vector3(0, 0, -1);
+                _cameraPosition = new Vector3(0, 50, 50);
+                _cameraFront = new Vector3(0, 0, -1);
             }
         }
 
