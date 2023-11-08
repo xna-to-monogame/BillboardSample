@@ -1,3 +1,5 @@
 ﻿
-using var game = new BillboardSample.Game1();
+using Billboard;
+
+using var game = new BillboardGame();
 game.Run();
