@@ -31,37 +31,37 @@ namespace BillboardPipeline
         #region Processor Parameters
 
 
-        int billboardsPerTriangle = 23;
+        private int _billboardsPerTriangle = 23;
 
         [DisplayName("Billboards per Triangle")]
         [DefaultValue(23)]
         [Description("Amount of vegetation per triangle in the landscape geometry.")]
         public int BillboardsPerTriangle
         {
-            get { return billboardsPerTriangle; }
-            set { billboardsPerTriangle = value; }
+            get { return _billboardsPerTriangle; }
+            set { _billboardsPerTriangle = value; }
         }
 
 
-        double treeProbability = 0.002;
+        private double _treeProbability = 0.002;
         [DisplayName("Tree Probability")]
         [DefaultValue(0.002)]
         [Description("The chance that a given piece of vegetation is actually a tree.")]
         public double TreeProbability
         {
-            get { return treeProbability; }
-            set { treeProbability = value; }
+            get { return _treeProbability; }
+            set { _treeProbability = value; }
         }
 
 
-        double catProbability = 0.0001;
+        private double _catProbability = 0.0001;
         [DisplayName("Cat Probability")]
         [DefaultValue(0.0001)]
         [Description("The chance that a given piece of vegetation is actually a cat.")]
         public double CatProbability
         {
-            get { return catProbability; }
-            set { catProbability = value; }
+            get { return _catProbability; }
+            set { _catProbability = value; }
         }
 
 
@@ -71,7 +71,7 @@ namespace BillboardPipeline
 
         #endregion
 
-        Random random = new Random();
+        private readonly Random _random = new Random();
 
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace BillboardPipeline
             }
 
             // Check whether this node is in fact a mesh.
-            MeshContent mesh = node as MeshContent;
+            MeshContent? mesh = node as MeshContent;
 
             if (mesh != null)
             {
@@ -142,7 +142,7 @@ namespace BillboardPipeline
                         for (int count = 0; count < BillboardsPerTriangle; count++)
                         {
                             Vector3 position, normal;
-                            
+
                             // Choose a random location on the triangle.
                             PickRandomPoint(positions[i1], positions[i2], positions[i3],
                                             normals[i1], normals[i2], normals[i3],
@@ -151,7 +151,7 @@ namespace BillboardPipeline
                             // Randomly choose what type of billboard to create.
                             GeometryContent billboardType;
 
-                            if (random.NextDouble() < TreeProbability)
+                            if (_random.NextDouble() < TreeProbability)
                             {
                                 billboardType = trees;
 
@@ -160,7 +160,7 @@ namespace BillboardPipeline
                                 // That's what trees do in real life, after all!
                                 normal = Vector3.Up;
                             }
-                            else if (random.NextDouble() < CatProbability)
+                            else if (_random.NextDouble() < CatProbability)
                             {
                                 billboardType = cats;
                             }
@@ -168,7 +168,7 @@ namespace BillboardPipeline
                             {
                                 billboardType = grass;
                             }
-                            
+
                             // Add a new billboard to the output geometry.
                             GenerateBillboard(vegetationMesh, billboardType, position, normal);
                         }
@@ -214,7 +214,12 @@ namespace BillboardPipeline
             EffectMaterialContent material = new EffectMaterialContent();
 
             // Point the material at our custom billboard effect.
-            string directory = Path.GetDirectoryName(identity.SourceFilename);
+            string? directory = Path.GetDirectoryName(identity.SourceFilename);
+
+            if (string.IsNullOrEmpty(directory))
+            {
+                throw new DirectoryNotFoundException($"Unable to locate the directory containing the source file: '{identity.SourceFilename}");
+            }
 
             string effectFilename = Path.Combine(directory, "Billboard.fx");
 
@@ -244,8 +249,8 @@ namespace BillboardPipeline
                              Vector3 normal1, Vector3 normal2, Vector3 normal3,
                              out Vector3 randomPosition, out Vector3 randomNormal)
         {
-            float a = (float)random.NextDouble();
-            float b = (float)random.NextDouble();
+            float a = (float)_random.NextDouble();
+            float b = (float)_random.NextDouble();
 
             if (a + b > 1)
             {
@@ -319,7 +324,7 @@ namespace BillboardPipeline
             // all four vertices. This is used in the vertex shader to make
             // each billboard a slightly different size, and to be affected
             // differently by the wind animation.
-            float randomValue = (float)random.NextDouble() * 2 - 1;
+            float randomValue = (float)_random.NextDouble() * 2 - 1;
 
             VertexChannel<float> randomValues;
             randomValues = channels.Get<float>(VertexChannelNames.TextureCoordinate(1));
