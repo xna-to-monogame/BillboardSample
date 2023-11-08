@@ -6,6 +6,14 @@
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Billboard Sample</Title>
+    <Product>Billboard</Product>
+    <Description>This sample shows how to efficiently render large numbers of billboard sprites, using a vertex shader to perform the billboard computations entirely on the GPU.</Description>
+    <Copyright>Copyright © Microsoft 2008</Copyright>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
