@@ -6,6 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Title>BillboardPipeline</Title>
+    <Product>BillboardPipeline</Product>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2008</Copyright>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" PriateAssets="All" />
   </ItemGroup>

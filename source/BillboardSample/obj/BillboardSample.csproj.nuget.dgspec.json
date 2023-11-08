@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardPipeline\\BillboardPipeline.csproj": {}
+    "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardSample\\BillboardSample.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardPipeline\\BillboardPipeline.csproj": {
+    "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardSample\\BillboardSample.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardPipeline\\BillboardPipeline.csproj",
-        "projectName": "BillboardPipeline",
-        "projectPath": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardPipeline\\BillboardPipeline.csproj",
+        "projectUniqueName": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardSample\\BillboardSample.csproj",
+        "projectName": "BillboardSample",
+        "projectPath": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardSample\\BillboardSample.csproj",
         "packagesPath": "C:\\Users\\Aristurtle\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardPipeline\\obj\\",
+        "outputPath": "C:\\Users\\Aristurtle\\Desktop\\monogame-dev\\billboard\\source\\BillboardSample\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,6 +45,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "MonoGame.Content.Builder.Task": {
+              "target": "Package",
+              "version": "[3.8.1.303, )"
+            },
             "MonoGame.Framework.DesktopGL": {
               "target": "Package",
               "version": "[3.8.1.303, )"
